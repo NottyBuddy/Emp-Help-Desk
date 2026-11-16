@@ -26,7 +26,7 @@ for (const viewport of viewports) {
     await page.setViewportSize(viewport);
     await page.goto("/index.html", { waitUntil: "domcontentloaded" });
     await expect(page.locator("#indinextLoader")).toHaveCount(0);
-    await expect(page.getByRole("heading", { name: /MOVE WITH PURPOSE/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /CRAFTED TO FIT\. INSTALLED TO LAST\./i })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Good to see you." })).toBeVisible();
     await expect(page.locator(".brand-footer-tagline")).toHaveText("Crafted to Fit. Installed to Last.");
     await expect(page.locator(".night-scene")).toBeAttached();
@@ -34,8 +34,8 @@ for (const viewport of viewports) {
     await expect(page.locator('link[rel="stylesheet"][href*="sitewide-transparent.css"]')).toHaveCount(1);
     await expect(page.locator(".site-background-video")).toBeAttached();
     await expect(page.locator(".site-background-video source")).toHaveAttribute("src", "Anime-bg.mp4");
-    await expect(page.locator(".vehicle-car")).toBeHidden();
-    await expect(page.locator(".vehicle-bike")).toBeHidden();
+    await expect(page.locator(".vehicle, .vehicle-car, .vehicle-bike")).toHaveCount(0);
+    
   await expect(page.locator(".night-scene")).toBeHidden();
     await expect(page.locator("#employeeId")).toBeVisible();
     await expect(page.locator("#password")).toBeVisible();
