@@ -1,0 +1,11 @@
+name = "indiframe-production-d1-mcp"
+main = "tools/cloudflare-d1-mcp/remote-worker.mjs"
+compatibility_date = "2025-01-01"
+workers_dev = true
+
+# This isolated MCP Worker is bound ONLY to the production database.
+# Do not add a previews.d1_databases binding here.
+[[d1_databases]]
+binding = "DB"
+database_name = "indiframe-helpdesk-db"
+database_id = "8854232a-6e8f-4fe9-849c-5b61dc229602"
