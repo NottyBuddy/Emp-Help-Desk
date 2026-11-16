@@ -1,0 +1,18 @@
+[auth]
+enabled = true
+providers = ["email"]
+
+# All reads/writes to shared team and KPI records are performed only through
+# authenticated API handlers that enforce manager/agent scope in SQL.
+[db.tables.agent_profiles]
+read = "public"
+write = "public"
+
+[db.tables.daily_kpis]
+read = "public"
+write = "public"
+
+# Quiz rows are accessed only through api/insights.js, which scopes agent reads to self and manager reads to the team.
+[db.tables.quiz_attempts]
+read = "public"
+write = "public"
