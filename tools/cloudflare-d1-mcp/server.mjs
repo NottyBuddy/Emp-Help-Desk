@@ -73,11 +73,19 @@ function assertSingleStatement(sql) {
 
 function protectAccounts(sql) {
   const normalized = sql.replace(/--[^\n]*|\/\*[\s\S]*?\*\//g, " ").replace(/\s+/g, " ").trim();
-  const mutates = /\b(DELETE\s+FROM|UPDATE|INSERT\s+INTO|REPLACE\s+INTO|DROP\s+TABLE|ALTER\s+TABLE)\s+(?:IF\s+(?:NOT\s+)?EXISTS\s+)?["'`]?agents["'`]?\b/i;
-  if (mutates.test(normalized)) {
+  const table = '(?:(?:main|temp)\\s*\\.\\s*)?["'`]?agents["'`]?';
+  const mutations = [
+    new RegExp('\\bDELETE\\s+FROM\\s+' + table + '\\b', 'i'),
+    new RegExp('\\bUPDATE(?:\\s+OR\\s+(?:ROLLBACK|ABORT|REPLACE|FAIL|IGNORE))?\\s+' + table + '\\b', 'i'),
+    new RegExp('\\b(?:INSERT|REPLACE)\\s+(?:OR\\s+(?:ROLLBACK|ABORT|REPLACE|FAIL|IGNORE)\\s+)?INTO\\s+' + table + '\\b', 'i'),
+    new RegExp('\\b(?:DROP|ALTER)\\s+TABLE\\s+(?:IF\\s+(?:NOT\\s+)?EXISTS\\s+)?' + table + '\\b', 'i'),
+    new RegExp('\\bCREATE\\s+(?:UNIQUE\\s+)?INDEX\\b[\\s\\S]*?\\bON\\s+' + table + '\\b', 'i'),
+    new RegExp('\\bCREATE\\s+TRIGGER\\b[\\s\\S]*?\\bON\\s+' + table + '\\b', 'i')
+  ];
+  if (mutations.some((pattern) => pattern.test(normalized))) {
     throw new Error("Safety policy: the agents account table is protected. Account records and password hashes cannot be changed or deleted through this connector.");
   }
-  if (/\b(DROP\s+DATABASE|ATTACH\s+DATABASE|DETACH\s+DATABASE|VACUUM\s+INTO)\b/i.test(normalized)) {
+  if (/\\b(PRAGMA|DROP\\s+DATABASE|ATTACH\\s+DATABASE|DETACH\\s+DATABASE|VACUUM\\s+INTO)\\b/i.test(normalized)) {
     throw new Error("This database-level operation is blocked by the connector safety policy.");
   }
 }
