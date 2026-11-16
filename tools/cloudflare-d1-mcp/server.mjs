@@ -73,17 +73,10 @@ function assertSingleStatement(sql) {
 
 function protectAccounts(sql) {
   const normalized = sql.replace(/--[^\n]*|\/\*[\s\S]*?\*\//g, " ").replace(/\s+/g, " ").trim();
-  const table = "(?:(?:main|temp)\\s*\\.\\s*)?[\"'`]?agents[\"'`]?";
-  const mutations = [
-    new RegExp('\\bDELETE\\s+FROM\\s+' + table + '\\b', 'i'),
-    new RegExp('\\bUPDATE(?:\\s+OR\\s+(?:ROLLBACK|ABORT|REPLACE|FAIL|IGNORE))?\\s+' + table + '\\b', 'i'),
-    new RegExp('\\b(?:INSERT|REPLACE)\\s+(?:OR\\s+(?:ROLLBACK|ABORT|REPLACE|FAIL|IGNORE)\\s+)?INTO\\s+' + table + '\\b', 'i'),
-    new RegExp('\\b(?:DROP|ALTER)\\s+TABLE\\s+(?:IF\\s+(?:NOT\\s+)?EXISTS\\s+)?' + table + '\\b', 'i'),
-    new RegExp('\\bCREATE\\s+(?:UNIQUE\\s+)?INDEX\\b[\\s\\S]*?\\bON\\s+' + table + '\\b', 'i'),
-    new RegExp('\\bCREATE\\s+TRIGGER\\b[\\s\\S]*?\\bON\\s+' + table + '\\b', 'i')
-  ];
-  if (mutations.some((pattern) => pattern.test(normalized))) {
-    throw new Error("Safety policy: the agents account table is protected. Account records and password hashes cannot be changed or deleted through this connector.");
+  const touchesAccounts = /\bagents\b/i.test(normalized);
+  const isMutation = /\b(DELETE|UPDATE|INSERT|REPLACE|DROP|ALTER|CREATE)\b/i.test(normalized);
+  if (touchesAccounts && isMutation) {
+    throw new Error("Safety policy: the agents account table is protected. Any mutating statement referencing agents is blocked; account records and password hashes cannot be changed or deleted through this connector.");
   }
   if (/\b(PRAGMA|DROP\s+DATABASE|ATTACH\s+DATABASE|DETACH\s+DATABASE|VACUUM\s+INTO)\b/i.test(normalized)) {
     throw new Error("This database-level operation is blocked by the connector safety policy.");
