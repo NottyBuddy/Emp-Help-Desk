@@ -48,7 +48,7 @@ jobs:
           node --input-type=module -e '
             import fs from "node:fs";
             const report = JSON.parse(fs.readFileSync("production-d1-inspection.json", "utf8"));
-            const rows = report.tables.map(t => "| " + t.name + " | " + t.rowCount + " |").join("\\n");
+            const rows = report.tables.map(t => "| " + t.name + " | " + t.rowCount + " |").join("\n");
             const summary = [
               "## Production D1 inspection (read only)",
               "",
@@ -60,6 +60,6 @@ jobs:
               "| Table | Rows |",
               "|---|---:|",
               rows
-            ].join("\\n");
-            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary + "\\n");
+            ].join("\n");
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary + "\n");
           '
