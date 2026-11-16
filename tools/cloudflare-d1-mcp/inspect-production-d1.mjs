@@ -20,7 +20,7 @@ async function rpc(method, params = {}) {
   if (!response.ok) throw new Error(`Production D1 MCP request failed (${response.status}): ${JSON.stringify(payload)}`);
   if (payload.error) throw new Error(`Production D1 MCP error: ${payload.error.message}`);
   if (payload.result?.isError) {
-    throw new Error(payload.result.content?.map(item => item.text).join("\\n") || "Production D1 MCP tool failed.");
+    throw new Error(payload.result.content?.map(item => item.text).join("\n") || "Production D1 MCP tool failed.");
   }
   const text = payload.result?.content?.find(item => item.type === "text")?.text;
   return text ? JSON.parse(text) : payload.result;
@@ -38,7 +38,7 @@ for (const item of schema.filter(x => x.type === "table")) {
     arguments: { sql: `SELECT COUNT(*) AS row_count FROM "${name}"`, params: [] }
   });
   const rows = countResult.result?.results || [];
-  const foreignKeys = [...(item.sql || "").matchAll(/REFERENCES\\s+["\x60]?([A-Za-z0-9_]+)["\x60]?\\s*\\(([^)]+)\\)/gi)]
+  const foreignKeys = [...(item.sql || "").matchAll(/REFERENCES\s+["\x60]?([A-Za-z0-9_]+)["\x60]?\s*\\(([^)]+)\\)/gi)]
     .map(match => ({ referencedTable: match[1], referencedColumns: match[2].split(",").map(value => value.trim().replace(/["\x60]/g, "")) }));
   tables.push({
     name,
@@ -56,4 +56,4 @@ const report = {
   schemaObjects: schema.filter(x => x.type === "view"),
   tables
 };
-process.stdout.write(JSON.stringify(report, null, 2) + "\\n");
+process.stdout.write(JSON.stringify(report, null, 2) + "\n");
