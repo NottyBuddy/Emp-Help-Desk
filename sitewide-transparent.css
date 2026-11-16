@@ -1,7 +1,7 @@
 /* Shared MP4 background. Preserve each page's existing typography and text colors. */
 html,body{background:transparent!important;background-color:transparent!important;background-image:none!important}
 body{position:relative;isolation:isolate}
-.site-background-video{position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;object-fit:cover!important;display:block!important;z-index:-1!important;pointer-events:none!important;opacity:1!important}
+.site-background-video{position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;object-fit:cover!important;display:block!important;z-index:-1!important;pointer-events:none!important;opacity:.62!important;filter:brightness(.72)!important}
 body>*:not(.site-background-video){position:relative}
 *,*::before,*::after{background-image:none!important;box-shadow:none!important;text-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 body *{background-color:transparent!important;border-color:transparent!important;outline-color:transparent!important}
