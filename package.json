@@ -6,8 +6,9 @@
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "mcp:d1": "node tools/cloudflare-d1-mcp/server.mjs",
-    "check": "node --check worker.js && node --check helpdesk-routes.js && node --check dashboard.js && node --check call-performance.js && node --check api.js && node --check breaks.js && node --check superadmin.js && node --check admin-section.js && node --check weekly-data.js && node --check weekly-data-routes.js && node --check call-performance-import.js && node --check harness.js && node --check tests.js && node --check indinext-workspace-ui.js && node --check tools/cloudflare-d1-mcp/server.mjs",
-    "test": "node tests.js",
+    "mcp:d1:remote": "wrangler dev --config wrangler.mcp.toml",
+    "check": "node --check worker.js && node --check helpdesk-routes.js && node --check dashboard.js && node --check call-performance.js && node --check api.js && node --check breaks.js && node --check superadmin.js && node --check admin-section.js && node --check weekly-data.js && node --check weekly-data-routes.js && node --check call-performance-import.js && node --check harness.js && node --check tests.js && node --check indinext-workspace-ui.js && node --check tools/cloudflare-d1-mcp/server.mjs && node --check tools/cloudflare-d1-mcp/remote-worker.mjs && node --check tools/cloudflare-d1-mcp/remote-worker.test.mjs",
+    "test": "node tests.js && node tools/cloudflare-d1-mcp/remote-worker.test.mjs",
     "test:browser": "playwright test"
   },
   "dependencies": {
