@@ -43,90 +43,13 @@
       <div id="profile" class="profile muted">Loading profile...</div>
     </div>
 
-    <nav class="nav" aria-label="Dashboard sections">
-      <button data-view="overview" type="button">Overview</button>
-      <button data-view="kpis" type="button">My KPI</button>
-      <button data-view="attendance" type="button">Attendance</button>
-      <button data-view="quiz" type="button">Weekly Quiz &amp; History</button>
-      <button id="adminNav" data-view="admin" type="button" class="hidden">Team Admin</button>
-      <a href="breaks.html" class="nav-link">Breaks</a>
-      <a href="call-performance.html" class="nav-link">Call Performance</a>
-      <a href="change-password.html" class="nav-link">Change Password</a>
-      <a id="superAdminLink" href="superadmin.html" class="nav-link hidden">Super Admin</a>
+    <nav class="nav" aria-label="Workspace sections">
+      <button data-view="attendance" class="active" type="button">Check In / Check Out</button>
+      <button data-view="quiz" type="button">Weekly Quiz</button>
+      <a href="breaks.html" class="nav-link">Break</a>
     </nav>
 
     <div id="globalStatus" class="status" role="status"></div>
-
-    <section id="view-overview" class="tab-panel agent-overview">
-      <div class="overview-heading">
-        <div><span class="overview-eyebrow">AGENT WORKSPACE</span><h2>My Overview</h2><p>Your weekly performance, monthly progress and attendance at a glance.</p></div>
-        <div class="overview-period-chip" id="overviewTodayDate">Today</div>
-      </div>
-
-      <section class="overview-block">
-        <div class="overview-block-head"><div><span class="overview-eyebrow">CALL PERFORMANCE</span><h3>Weekly overview</h3></div><span class="overview-period-label" id="overviewWeekRange">Monday – Sunday</span></div>
-        <div class="overview-metric-grid">
-          <article class="overview-metric-card"><span>Total Calls</span><strong id="weekTotalCalls">—</strong><small>Current week</small></article>
-          <article class="overview-metric-card"><span>Connect Calls</span><strong id="weekConnectCalls">—</strong><small>Current week</small></article>
-          <article class="overview-metric-card overview-rate-card"><span>Connect Rate</span><strong id="weekConnectRate">—</strong><small>Connected ÷ total calls</small></article>
-        </div>
-      </section>
-
-      <section class="overview-block">
-        <div class="overview-block-head"><div><span class="overview-eyebrow">CALL PERFORMANCE</span><h3>Monthly overview</h3></div><span class="overview-period-label" id="overviewMonthLabel">Current month</span></div>
-        <div class="overview-metric-grid">
-          <article class="overview-metric-card"><span>Total Calls</span><strong id="monthTotalCalls">—</strong><small>Current month</small></article>
-          <article class="overview-metric-card"><span>Connect Calls</span><strong id="monthConnectCalls">—</strong><small>Current month</small></article>
-          <article class="overview-metric-card overview-rate-card"><span>Connect Rate</span><strong id="monthConnectRate">—</strong><small>Connected ÷ total calls</small></article>
-        </div>
-      </section>
-
-      <section class="overview-block">
-        <div class="overview-block-head"><div><span class="overview-eyebrow">ATTENDANCE</span><h3>Attendance summary</h3></div><span class="overview-period-label">Excel records</span></div>
-        <div class="overview-metric-grid overview-four-grid">
-          <article class="overview-metric-card"><span>Present</span><strong id="overviewPresent">—</strong><small>Selected period</small></article>
-          <article class="overview-metric-card"><span>Half Day</span><strong id="overviewHalfDay">—</strong><small>Selected period</small></article>
-          <article class="overview-metric-card"><span>Absent</span><strong id="overviewAbsent">—</strong><small>Selected period</small></article>
-          <article class="overview-metric-card"><span>On-time Logins</span><strong id="overviewOnTime">—</strong><small>Excel punctuality</small></article>
-          <article class="overview-metric-card"><span>Late Logins</span><strong id="overviewLate">—</strong><small>Excel punctuality</small></article>
-        </div>
-      </section>
-
-      <section class="overview-lower-grid">
-        <article class="overview-panel">
-          <div class="overview-block-head"><div><span class="overview-eyebrow">LOGIN HISTORY</span><h3>My login times</h3></div><span class="overview-period-label">This week</span></div>
-          <div id="overviewLoginHistory" class="overview-empty">Historical login records will appear after the Attendance Excel is imported.</div>
-        </article>
-        <article class="overview-panel overview-live-panel">
-          <div class="overview-block-head"><div><span class="overview-eyebrow">LIVE TRACKING</span><h3>Today's work</h3></div><span class="overview-live-indicator"><i></i> Live</span></div>
-          <div class="overview-live-row"><span>Today's login time</span><strong id="overviewTodayLogin">—</strong></div>
-          <div class="overview-live-row overview-work-total"><span>Total working hours</span><strong id="overviewTodayWork">—</strong></div>
-          <p class="overview-live-note">Break duration is excluded. Only today's working time is shown here.</p>
-          <div id="overviewLiveStatus" class="overview-live-status">Checking today's attendance…</div>
-        </article>
-      </section>
-      <div id="overviewDataNote" class="overview-data-note" role="status">Historical Excel data has not been connected yet.</div>
-    </section>
-
-    <section id="view-kpis" class="tab-panel hidden">
-      <div class="section card">
-        <h2>My KPI</h2>
-        <div class="report-filters my-kpi-filters">
-          <label>Period<select id="myKpiPeriod"><option value="today">Today</option><option value="yesterday">Yesterday</option><option value="week">This Week</option><option value="month" selected>This Month</option><option value="lastmonth">Last Month</option><option value="custom">Custom Range</option></select></label>
-          <label>From<input id="myKpiFrom" type="date" disabled></label>
-          <label>To<input id="myKpiTo" type="date" disabled></label>
-          <button id="myKpiApply" class="primary-btn" type="button">Apply Filter</button>
-        </div>
-        <div id="myKpiRangeLabel" class="note">This Month</div>
-        <div id="myKpiSummary" class="grid my-kpi-summary"></div>
-        <div class="section"><h3>Date-wise Call Performance</h3><div id="myKpiDaily" class="empty">Loading daily performance…</div></div>
-        <div class="section"><h3>My Agent-wise Analysis</h3><div id="myKpiAgent" class="empty">Loading agent analysis…</div></div>
-        <div class="section"><h3>My Disposition Summary</h3><div id="myKpiDisposition" class="empty">Loading disposition summary…</div></div>
-        <div class="section"><h3>Day-wise Disposition</h3><div id="myKpiDayDisposition" class="empty">Date-wise disposition detail is not available in the current KPI API response.</div></div>
-        <div class="note">This portal displays only your own KPI. Outgoing/incoming split, total call duration and date-by-disposition matrix will appear when those fields are available in the published report data.</div>
-        <div id="myKpiTable" class="hidden"></div>
-      </div>
-    </section>
 
     <section id="view-attendance" class="tab-panel hidden attendance-workspace">
       <section class="attendance-hero">
@@ -172,69 +95,6 @@
       </section>
       <section class="attendance-ledger-card published-attendance-card"><div class="attendance-history-head"><div><span class="attendance-eyebrow">PUBLISHED SOURCE</span><h3>My Excel Attendance</h3><p>Only rows published for your employee account</p></div></div><div id="publishedAttendanceStatus" class="attendance-source-note">Loading published attendance…</div><div id="publishedAttendanceRows" class="attendance-ledger-wrap"></div></section>
       <div class="alert">Check-in / check-out server par record hota hai. Excel-based historical status tabhi update hoga jab attendance / leave sheet upload aur publish hogi.</div>
-    </section>
-
-    <section id="view-admin" class="tab-panel hidden">
-      <div id="adminOverviewNew">
-        <section class="adm-hero"><div><span class="adm-eyebrow">INDINEXT / ADMIN COMMAND CENTRE</span><h2>Team Overview</h2><p>Live operations, verified call performance and team-wide reporting.</p></div><button id="admRefresh" class="adm-refresh" type="button">↻ Refresh data</button></section>
-        <section class="adm-fixed-grid" aria-label="Fixed call performance periods">
-          <article class="adm-period-card"><h3>Today</h3><div class="adm-period-metrics"><div><span>Total Calls</span><strong id="admTodayCalls">—</strong></div><div><span>Connect Calls</span><strong id="admTodayConnected">—</strong></div><div><span>Connect Rate</span><strong id="admTodayRate">—</strong></div></div></article>
-          <article class="adm-period-card"><h3>This Week</h3><div class="adm-period-metrics"><div><span>Total Calls</span><strong id="admWeekCalls">—</strong></div><div><span>Connect Calls</span><strong id="admWeekConnected">—</strong></div><div><span>Connect Rate</span><strong id="admWeekRate">—</strong></div></div></article>
-          <article class="adm-period-card"><h3>This Month</h3><div class="adm-period-metrics"><div><span>Total Calls</span><strong id="admMonthCalls">—</strong></div><div><span>Connect Calls</span><strong id="admMonthConnected">—</strong></div><div><span>Connect Rate</span><strong id="admMonthRate">—</strong></div></div></article>
-        </section>
-        <section class="adm-quick-grid">
-          <article class="adm-mini-stat"><span>Today Present · Website Check-in</span><strong id="admPresent">—</strong></article>
-          <article class="adm-mini-stat"><span>Live Agents on Break</span><strong id="admOnBreak">—</strong></article>
-        </section>
-        <section class="adm-split-grid">
-          <article class="adm-panel"><div class="adm-panel-head"><div><span class="adm-eyebrow">DISPOSITION MIX</span><h3>Disposition-wise records</h3><p>One record per agent per date; only populated dispositions.</p></div></div><div id="admDispositionChart"><div class="adm-empty">Loading dispositions…</div></div></article>
-          <article class="adm-panel"><div class="adm-panel-head"><div><span class="adm-eyebrow">CALL DIRECTION</span><h3>Incoming &amp; Outgoing</h3><p>Uses the same date and agent filters as the detailed team report.</p></div></div><div class="adm-direction-grid">
-            <div class="adm-direction-item"><span>Incoming Calls</span><strong id="admIncoming">—</strong></div><div class="adm-direction-item"><span>Incoming Connected</span><strong id="admIncomingConnected">—</strong></div><div class="adm-direction-item"><span>Incoming Not Connected</span><strong id="admIncomingMissed">—</strong></div>
-            <div class="adm-direction-item"><span>Outgoing Calls</span><strong id="admOutgoing">—</strong></div><div class="adm-direction-item"><span>Outgoing Connected</span><strong id="admOutgoingConnected">—</strong></div><div class="adm-direction-item"><span>Outgoing Not Connected</span><strong id="admOutgoingMissed">—</strong></div>
-            <div class="adm-direction-item"><span>Combined Total Calls</span><strong id="admCombinedCalls">—</strong></div><div class="adm-direction-item"><span>Combined Connect Calls</span><strong id="admCombinedConnected">—</strong></div><div class="adm-direction-item"><span>Combined Connect Rate</span><strong id="admCombinedRate">—</strong></div>
-          </div><p class="adm-footnote">Not connected / missed and connection rates are shown only when source fields support the calculation.</p></article>
-        </section>
-        <section class="adm-panel"><div class="adm-panel-head"><div><span class="adm-eyebrow">LIVE AGENT MONITORING</span><h3>Current team status</h3><p>Select an agent to open their filtered report below.</p></div></div><div id="admLiveAgents"><div class="adm-empty">Loading live agent status…</div></div></section>
-        <section id="admCustomReport" class="adm-panel"><div class="adm-panel-head"><div><span class="adm-eyebrow">CUSTOM DATE REPORT</span><h3>Detailed team report</h3><p>Custom dates affect this report only. Today / Week / Month cards above remain fixed.</p></div></div>
-          <div class="adm-custom-controls"><label>From<input id="admCustomFrom" type="date"></label><label>To<input id="admCustomTo" type="date"></label><label>Search agent by name<input id="admAgentSearch" type="search" placeholder="Agent name"></label><button id="admCustomApply" type="button">Apply custom report</button><button id="admCustomReset" type="button">Reset agent</button></div>
-          <div id="admCustomSummary" class="adm-custom-summary"></div><div id="admCustomTable"><div class="adm-empty">Choose a date range and apply the report.</div></div><p id="admCustomStatus" class="adm-source"></p>
-        </section>
-        <p id="admDataStatus" class="adm-source">Connecting to published reports…</p>
-      </div>
-      <div class="section card">
-        <h2>Team Reports — Date Filter</h2>
-        <div class="report-filters">
-          <label>Period<select id="adminPeriod"><option value="today">Today</option><option value="yesterday">Yesterday</option><option value="week" selected>This Week</option><option value="month">This Month</option><option value="lastmonth">Last Month</option><option value="custom">Custom Range</option></select></label>
-          <label>From<input id="adminFrom" type="date" disabled></label>
-          <label>To<input id="adminTo" type="date" disabled></label>
-          <button id="applyAdminFilter" class="primary-btn" type="button">Apply Filter</button>
-        </div>
-        <div id="adminFilterLabel" class="note">This Week</div>
-      </div>
-      <div id="admin-summary" class="grid admin-kpi-grid">
-        <div class="card stat-card"><div class="label">Active Employees</div><div id="adminActiveAgents" class="value">—</div></div>
-        <div class="card stat-card"><div class="label">Team Quiz Attempts</div><div id="adminQuizAttempts" class="value">—</div></div>
-        <div class="card stat-card"><div class="label">Agents Checked In</div><div id="adminAttendanceCount" class="value">—</div></div>
-        <div class="card stat-card"><div class="label">Active Breaks</div><div id="adminBreakCount" class="value">—</div></div><div class="card stat-card"><div class="label">Call Performance Records</div><div id="adminCallRows" class="value">—</div></div><div class="card stat-card"><div class="label">Total Team Calls</div><div id="adminCallTotal" class="value">—</div></div><div class="card stat-card"><div class="label">Outgoing Calls</div><div id="adminCallOutgoing" class="value">—</div></div><div class="card stat-card"><div class="label">Incoming Calls</div><div id="adminCallIncoming" class="value">—</div></div>
-      </div>
-      <div id="adminVisualAnalytics" class="admin-visual-analytics" aria-label="Team performance charts">
-        <section class="admin-chart-card"><h3>Team activity</h3><p class="chart-caption">Attempts by agent · selected date range</p><div id="adminAttemptsChart" class="admin-chart-empty">Loading team activity…</div><div class="admin-chart-legend"><span>Call attempts</span></div></section>
-        <section class="admin-chart-card"><h3>Qualified leads</h3><p class="chart-caption">Qualified leads by agent · selected date range</p><div id="adminQualifiedChart" class="admin-chart-empty">Loading qualified leads…</div><div class="admin-chart-legend"><span>Qualified leads</span></div></section>
-      </div>
-      <div id="adminHome" class="admin-home-grid">
-        <button class="admin-module-card" type="button" data-admin-open="admin-team"><span class="module-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><strong>Team Members</strong><small>Employee directory and active status</small><span class="module-open">View details →</span></button>
-        <button class="admin-module-card" type="button" data-admin-open="admin-attendance"><span class="module-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><strong>Attendance</strong><small>Check-ins, check-outs and work hours</small><span class="module-open">View details →</span></button>
-        <button class="admin-module-card" type="button" data-admin-open="admin-breaks"><span class="module-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2v2M14 2v2M8 6h8l1 4a5 5 0 0 1-5 6h-1a5 5 0 0 1-5-6l1-4ZM11 16v3a3 3 0 0 0 3 3h2"/></svg></span><strong>Breaks</strong><small>Break history and active breaks</small><span class="module-open">View details →</span></button>
-        <button class="admin-module-card" type="button" data-admin-open="admin-kpi"><span class="module-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 6-7"/><path d="M16 6h4v4"/></svg></span><strong>Team KPI</strong><small>Calls, conversions and performance</small><span class="module-open">View details →</span></button>
-        <a class="admin-module-card disposition-module-card" href="disposition-performance.html"><span class="module-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h17"/><path d="M8 15v-4M13 15V7M18 15V3"/></svg></span><strong>Disposition Performance</strong><small>Agent-wise disposition counts and incoming / outgoing analysis</small><span class="module-open">Open report →</span></a>
-        <button class="admin-module-card" type="button" data-admin-open="admin-quiz"><span class="module-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l2 2 4-4"/><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 3.5h6"/></svg></span><strong>Quiz Results</strong><small>Weekly attempts and team scores</small><span class="module-open">View details →</span></button>
-      </div>
-      <div id="adminDetailBar" class="admin-detail-bar hidden"><button id="adminBackBtn" class="secondary-btn" type="button">← All sections</button><strong id="adminDetailTitle">Section details</strong><span>Team monitoring</span></div>
-      <div class="admin-report-grid"><div id="admin-team" class="section card"><h2>Team Members</h2><div id="adminAgentsTable" class="empty">Loading team…</div></div></div>
-      <div id="admin-attendance" class="section card"><h2>Team Attendance</h2><button class="secondary-btn export-report" data-export="attendance" type="button">Export Excel</button><div id="adminAttendanceTable" class="empty">Loading attendance…</div></div>
-      <div id="admin-breaks" class="section card"><h2>Team Break History</h2><button class="secondary-btn export-report" data-export="breaks" type="button">Export Excel</button><div id="adminBreakTable" class="empty">Loading breaks…</div></div>
-      <div id="admin-kpi" class="section card"><h2>Team KPI</h2><button class="secondary-btn export-report" data-export="kpi" type="button">Export Excel</button><div id="adminKpiTable" class="empty">Loading KPI…</div></div>
-      <div id="admin-quiz" class="section card"><h2>Quiz Results</h2><button class="secondary-btn export-report" data-export="quiz" type="button">Export Excel</button><div id="adminQuizTable" class="empty">Loading quiz results…</div></div></div>
     </section>
 
     <section id="view-quiz" class="tab-panel hidden">
