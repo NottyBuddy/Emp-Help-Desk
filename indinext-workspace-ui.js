@@ -5,13 +5,8 @@
   const path = location.pathname.split("/").pop() || "dashboard.html";
   const existingNav = document.querySelector("body:not(.helpdesk-login) .nav");
   const links = [
-    ["dashboard.html", "Overview", "OV"],
-    ["call-performance.html", "Call Performance", "CP"],
-    ["breaks.html", "Break Management", "BR"],
-    ["admin-section.html", "Admin Workspace", "AD"],
-    ["weekly-data.html", "Weekly Data", "WD"],
-    ["superadmin.html", "Super Admin", "SA"],
-    ["change-password.html", "Change Password", "PW"]
+    ["dashboard.html", "Check In / Check Out", "IN"],
+    ["breaks.html", "Break", "BR"]
   ];
   function makeWorkspaceNav() {
     const nav = document.createElement("nav");
