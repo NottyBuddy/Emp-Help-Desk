@@ -16,15 +16,6 @@
 <div id="message" class="break-message" role="status"></div>
 <div class="break-grid">
 <section class="break-card break-live-card"><div class="break-card-heading"><div><span class="break-eyebrow">LIVE SESSION</span><h2>My Current Break</h2></div><span id="breakStatePill" class="break-state-pill">Checking status</span></div><div id="breakStatus" class="break-status-copy">Status load ho raha hai…</div><div class="break-timer-label">ELAPSED TIME</div><div id="elapsed" class="break-time">00:00:00</div><div class="break-controls"><label class="break-select-wrap"><span>BREAK TYPE</span><select id="breakType"><option value="tea">Tea Break</option><option value="lunch">Lunch Break</option><option value="bio">Bio Break</option></select></label><button id="startBreak" class="break-btn break-start">Start Break</button><button id="endBreak" class="break-btn break-end" disabled>End Break</button></div><p class="break-footnote">Break start and end times are recorded by the existing server.</p></section>
-<section class="break-card acw-live-card">
-  <div class="break-card-heading"><div><span class="break-eyebrow">WORK ACTIVITY</span><h2>After Call Work (ACW)</h2></div><span id="acwStatePill" class="break-state-pill">Checking status</span></div>
-  <p class="break-status-copy">CRM updates, Team Lead queries, QA refreshers and follow-up work. ACW is counted as working time, not as a break.</p>
-  <div class="break-timer-label">ACW ELAPSED TIME</div><div id="acwElapsed" class="break-time">00:00:00</div>
-  <div id="acwStatus" class="break-status-copy">ACW status load ho raha hai…</div>
-  <div class="break-controls"><button id="startAcw" class="break-btn break-start" type="button">Start ACW</button><button id="endAcw" class="break-btn break-end" type="button" disabled>End ACW</button></div>
-  <p class="break-footnote">ACW sessions are recorded separately and are included in net working hours.</p>
-</section>
-
 <section id="teamCard" class="break-card break-team-card hidden"><h2>Team Active Breaks</h2><div class="muted">Admin view — live active break status</div><div id="teamBreaks" style="margin-top:12px">Loading…</div></section></div>
 </main>
 <script src="api.js"></script><script src="breaks.js"></script><script src="indinext-workspace-ui.js?v=hybrid-ui-v1"></script>
