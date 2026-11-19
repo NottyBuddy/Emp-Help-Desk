@@ -14,7 +14,7 @@ function renderOwn(){
 async function load(){
  try{
   const me=await api.apiRequest("/api/me"),u=me.user||me;
-  if(String(u.role||"").toLowerCase()==="admin"||u.isSuperAdmin){location.replace("dashboard.html?view=admin");return;}
+  
   document.body.classList.add("agent-mode");$("profile").textContent=(u.fullName||u.employeeId)+" · "+u.role;
   const breakData=await api.apiRequest("/api/hd/breaks/status");activeBreak=breakData.active;serverOffset=Date.parse(breakData.serverTime||new Date().toISOString())-Date.now();
   renderOwn();
