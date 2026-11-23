@@ -3,73 +3,61 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#070a10">
-  <meta name="description" content="Secure employee access to the INDINEXT Help Desk workspace.">
-  <title>INDINEXT — Secure Workspace Access</title>
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="theme-color" content="#10101b">
+  <meta name="description" content="A simple, modern employee help desk workspace.">
+  <title>Employee Help Desk</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="login.css?v=night-drive-20261111">
-  <link rel="stylesheet" href="indinext-final-ui.css?v=night-drive-20261111">
-  <link rel="stylesheet" href="indinext-brand-system.css?v=night-drive-20261111">
-  <link rel="stylesheet" href="login-night-drive.css?v=2">
-<link rel="stylesheet" href="sitewide-transparent.css?v=mp4-background-dim-v2-20261116">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="employee-helpdesk.css?v=1">
 </head>
-<body class="helpdesk-login night-drive-login">
-<video class="site-background-video" autoplay muted loop playsinline preload="auto" aria-hidden="true"><source src="Anime-bg.mp4" type="video/mp4"></video>
-  <div class="night-scene" aria-hidden="true">
-    <div class="scene-sky"></div>
-    <div class="cityline cityline-back"></div>
-    <div class="cityline cityline-front"></div>
-    <div class="distant-headlights"></div>
-    <div class="road-horizon"></div>
-    <div class="road-surface">
-      <div class="road-glow"></div>
-      <div class="lane lane-one"></div>
-      <div class="lane lane-two"></div>
-      <div class="lane lane-three"></div>
-    </div>
-    <div class="light-streak streak-a"></div>
-    <div class="light-streak streak-b"></div>
-    <div class="light-streak streak-c"></div>
-<div class="road-vignette"></div>
-  </div>
-
-  <main class="login-stage night-login-stage">
-    <section class="brand-stage night-brand" aria-label="INDINEXT">
-      <div class="brand-mark"><span class="brand-mark-line"></span><span>IN</span></div>
-      <p class="eyebrow">INDINEXT / EMPLOYEE PORTAL</p>
-      <h1>CRAFTED TO FIT.<br><span>INSTALLED TO LAST.</span></h1>
-      <p class="brand-description">One secure destination for your workday.<br>Focused teams. Clear performance. Faster decisions.</p>
-      <div class="brand-proof"><span class="proof-pulse"></span> YOUR WORKSPACE. YOUR MOMENTUM.</div>
-    </section>
-
-    <section class="login-panel night-login-panel" aria-labelledby="login-title">
-      <div class="glass-card night-glass-card">
-        <div class="card-topline"><span class="status-dot"></span><span>SECURE WORKSPACE ACCESS</span><span class="topline-rule"></span></div>
-        <div class="card-heading">
-          <p class="card-kicker">WELCOME BACK</p>
-          <h2 id="login-title">Good to see you.</h2>
-          <p>Sign in to pick up where you left off.</p>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="Employee Help Desk home"><span class="brand-mark">EH</span><span><b>Employee Help Desk</b><small>WORKSPACE</small></span></a>
+      <div class="nav-label">WORKSPACE</div>
+      <nav class="nav-list" aria-label="Main navigation">
+        <button class="nav-item active" data-view="overview"><span>◫</span> Overview</button>
+        <button class="nav-item" data-view="requests"><span>▤</span> Help requests <i id="requestCount">0</i></button>
+        <button class="nav-item" data-view="knowledge"><span>⌕</span> Knowledge base</button>
+        <button class="nav-item" data-view="faqs"><span>✳</span> FAQs</button>
+        <button class="nav-item" data-view="sops"><span>▧</span> Guides &amp; SOPs</button>
+        <button class="nav-item" data-view="team"><span>♧</span> Team directory</button>
+      </nav>
+      <div class="sidebar-bottom"><div class="local-status"><span></span><div><b>Workspace ready</b><small>Local preview mode</small></div></div><button class="reset-link" id="resetData">Clear workspace data</button></div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="Open navigation">☰</button><div class="breadcrumb">WORKSPACE <span>/</span> <b id="crumb">OVERVIEW</b></div><div class="top-actions"><label class="global-search"><span>⌕</span><input id="globalSearch" type="search" placeholder="Search this workspace…" aria-label="Search this workspace"></label><button class="avatar" title="Local preview profile">U</button></div></header>
+      <section class="page-heading"><div><p class="eyebrow" id="pageEyebrow">YOUR WORKSPACE</p><h1 id="pageTitle">Good day. Here's your workspace.</h1><p id="pageSubtitle">Find answers, track requests and keep work moving.</p></div><button class="primary-btn" id="newRequestBtn">＋ New request</button></section>
+      <section id="view-overview" class="view active">
+        <div class="stat-grid">
+          <article class="stat-card"><span class="stat-icon purple">▤</span><p>Open requests</p><strong id="openCount">0</strong><small>Waiting for a response</small></article>
+          <article class="stat-card"><span class="stat-icon teal">✓</span><p>Resolved requests</p><strong id="resolvedCount">0</strong><small>Marked as complete</small></article>
+          <article class="stat-card"><span class="stat-icon amber">✳</span><p>Knowledge articles</p><strong id="articleCount">0</strong><small>FAQs and guides</small></article>
+          <article class="stat-card"><span class="stat-icon rose">◷</span><p>Drafts</p><strong id="draftCount">0</strong><small>Saved in this browser</small></article>
         </div>
-        <form id="loginForm" novalidate>
-          <div class="field">
-            <label for="employeeId">EMPLOYEE ID</label>
-            <input id="employeeId" name="employeeId" autocomplete="username" placeholder="Enter your Employee ID" required>
-          </div>
-          <div class="field">
-            <label for="password">PASSWORD</label>
-            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required>
-          </div>
-          <button id="loginButton" type="submit"><span>Enter workspace</span><span class="button-arrow" aria-hidden="true">↗</span></button>
-          <div id="message" class="message" role="status" aria-live="polite"></div>
-        </form>
-        <div class="card-footer"><span class="footer-shield">◆</span> Protected access · INDINEXT internal network</div>
-      </div>
-    </section>
-    <footer class="brand-footer night-brand-footer"><span class="brand-footer-name">INDINEXT</span><span class="brand-footer-tagline">Crafted to Fit. Installed to Last.</span></footer>
-  </main>
-  <script src="login.js?v=night-drive-20261111" defer></script>
+        <div class="content-grid">
+          <section class="panel"><div class="panel-head"><div><p class="eyebrow">GET STARTED</p><h2>What do you need help with?</h2></div></div><div class="quick-grid">
+            <button class="quick-card" data-view="requests"><span class="quick-icon purple">＋</span><b>Raise a request</b><small>Describe an issue and track it.</small><em>Open requests →</em></button>
+            <button class="quick-card" data-view="knowledge"><span class="quick-icon teal">⌕</span><b>Search knowledge</b><small>Find useful answers and guidance.</small><em>Browse articles →</em></button>
+            <button class="quick-card" data-view="faqs"><span class="quick-icon amber">✳</span><b>Read FAQs</b><small>Quick answers to common questions.</small><em>View FAQs →</em></button>
+            <button class="quick-card" data-view="sops"><span class="quick-icon rose">▧</span><b>Guides &amp; SOPs</b><small>Follow step-by-step instructions.</small><em>Explore guides →</em></button>
+          </div></section>
+          <section class="panel recent-panel"><div class="panel-head"><div><p class="eyebrow">ACTIVITY</p><h2>Recent requests</h2></div><button class="text-btn" data-view="requests">View all →</button></div><div id="recentRequests" class="empty-state"><span>✧</span><b>No requests yet</b><p>New requests will appear here.</p></div></section>
+        </div>
+        <section class="panel tips-panel"><span class="tips-icon">✦</span><div><b>Start with a clean workspace</b><p>This preview contains no imported employee records or company data. Add sample content when you're ready.</p></div></section>
+      </section>
+      <section id="view-requests" class="view"><div class="toolbar"><div><h2>Help requests</h2><p>Create and manage requests in this browser.</p></div><button class="primary-btn" id="newRequestBtn2">＋ New request</button></div><div class="filter-row"><input id="requestSearch" type="search" placeholder="Search requests…"><select id="requestFilter"><option value="all">All statuses</option><option value="Open">Open</option><option value="In progress">In progress</option><option value="Resolved">Resolved</option></select></div><div id="requestList" class="request-list"></div></section>
+      <section id="view-knowledge" class="view"><div class="toolbar"><div><h2>Knowledge base</h2><p>Search all published FAQs and guides.</p></div><button class="primary-btn" id="addArticleBtn">＋ Add article</button></div><div class="filter-row"><input id="articleSearch" type="search" placeholder="Search articles…"></div><div id="knowledgeList" class="article-grid"></div></section>
+      <section id="view-faqs" class="view"><div class="toolbar"><div><h2>Frequently asked questions</h2><p>Short answers to recurring questions.</p></div><button class="primary-btn" id="addFaqBtn">＋ Add FAQ</button></div><div id="faqList" class="stack-list"></div></section>
+      <section id="view-sops" class="view"><div class="toolbar"><div><h2>Guides &amp; SOPs</h2><p>Step-by-step procedures and internal guides.</p></div><button class="primary-btn" id="addSopBtn">＋ Add guide</button></div><div id="sopList" class="article-grid"></div></section>
+      <section id="view-team" class="view"><div class="toolbar"><div><h2>Team directory</h2><p>Optional contacts for your workspace.</p></div><button class="primary-btn" id="addPersonBtn">＋ Add person</button></div><div id="teamList" class="team-grid"></div></section>
+      <footer class="footer">EMPLOYEE HELP DESK <span>LOCAL PREVIEW · NO SIGN-IN REQUIRED</span></footer>
+    </main>
+  </div>
+  <dialog id="editorDialog" class="dialog"><form id="editorForm" method="dialog"><div class="dialog-head"><div><p class="eyebrow" id="dialogEyebrow">WORKSPACE</p><h2 id="dialogTitle">Create item</h2></div><button type="button" class="icon-close" id="closeDialog" aria-label="Close">×</button></div><div id="dialogFields" class="dialog-fields"></div><div class="dialog-actions"><button type="button" class="secondary-btn" id="cancelDialog">Cancel</button><button class="primary-btn" id="saveDialog" value="save">Save</button></div></form></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="employee-helpdesk.js?v=1"></script>
 </body>
 </html>
