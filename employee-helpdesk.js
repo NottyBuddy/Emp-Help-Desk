@@ -1,4 +1,4 @@
-(()=>{'use strict';
+(()=>{'use strict';\ntry{sessionStorage.removeItem('indiframe_token');sessionStorage.removeItem('forcePasswordChange')}catch{}
 const KEY='employee_helpdesk_preview_v1';
 const empty=()=>({requests:[],articles:[],faqs:[],sops:[],team:[]});
 let data;try{data=JSON.parse(localStorage.getItem(KEY)||'null')||empty()}catch{data=empty()}
