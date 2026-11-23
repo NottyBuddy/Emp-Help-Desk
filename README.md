@@ -20,7 +20,7 @@ New content is saved only in the current browser using localStorage. The workspa
 
 This is a preview build, not a production multi-company SaaS yet. Data is local to the browser and is not shared between devices or team members. Authentication, multi-tenant database, permissions, audit history, backups, billing, and production deployment are intentionally not active in this preview.
 
-The previous Cloudflare D1 database has not yet been wiped. Before deleting production rows, inspect the live D1 schema and take a backup. The old login endpoint has been disabled (HTTP 410) while the product is rebuilt.
+The previous Cloudflare D1 database has not yet been wiped. Before deleting production rows, inspect the live D1 schema and take a backup. The Cloudflare Worker is now in maintenance mode: only the root status and health-check endpoints respond; every legacy API route returns HTTP 410. The Worker no longer imports or calls the old employee, session, helpdesk, or weekly-data route handlers, so those routes cannot read or write the old D1 database.
 
 ## Run locally
 
