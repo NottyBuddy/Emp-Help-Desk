@@ -66,6 +66,8 @@ const report = {
   target: "production",
   databaseName,
   databaseId,
+  databaseVersion: identity.result?.version || null,
+  databaseFileSizeBytes: identity.result?.file_size ?? null,
   previewDatabaseIdTouched: false,
   generatedAt: new Date().toISOString(),
   schemaObjects: schema.filter(x => x.type === "view").map(x => ({ name: x.name })),
