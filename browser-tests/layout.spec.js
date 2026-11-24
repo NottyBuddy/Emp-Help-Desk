@@ -63,10 +63,8 @@ test("create, update status, search and delete a help request", async ({ page })
   await expect(page.locator("#requestList")).toContainText("Laptop access issue");
   await page.locator('#requestList [data-action="status"]').click();
   await expect(page.locator("#requestList")).toContainText("In progress");
-  await page.locator('#requestList [data-action="delete"]').click();
   page.once("dialog", dialog => dialog.accept());
-  // The confirmation is raised by the click above; if the browser delivered it first,
-  // the request is already deleted. Otherwise click again after installing the handler.
+  await page.locator('#requestList [data-action="delete"]').click();
   await expect(page.locator("#requestCount")).toHaveText("0");
 });
 
