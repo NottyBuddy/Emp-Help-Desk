@@ -9,7 +9,16 @@ const db = {
     calls.push(call);
     return {
       bind(...params) { call.params = params; return this; },
-      async all() { return { success: true, results: [{ name: "example" }] }; },
+      async all() {
+        if (sql === "PRAGMA table_list") return { success: true, results: [
+          { schema: "main", name: "example", type: "table" },
+          { schema: "main", name: "sqlite_sequence", type: "table" }
+        ] };
+        if (sql === 'PRAGMA table_info("example")') return { success: true, results: [
+          { cid: 0, name: "id", type: "INTEGER", notnull: 0, dflt_value: null, pk: 1 }
+        ] };
+        return { success: true, results: [{ name: "example" }] };
+      },
       async run() { return { success: true, meta: { changes: 1 } }; }
     };
   }
@@ -47,6 +56,10 @@ assert.match(identity.payload.result.content[0].text, /8854232a-6e8f-4fe9-849c-5
 
 const schema = await rpc({ jsonrpc: "2.0", id: 4, method: "tools/call", params: { name: "d1_production_schema" } });
 assert.match(schema.payload.result.content[0].text, /example/);
+assert.match(schema.payload.result.content[0].text, /"columns"/);
+assert.doesNotMatch(schema.payload.result.content[0].text, /sqlite_sequence/);
+assert.ok(calls.some(call => call.sql === "PRAGMA table_list"));
+assert.ok(calls.some(call => call.sql === 'PRAGMA table_info("example")'));
 
 const select = await rpc({ jsonrpc: "2.0", id: 5, method: "tools/call", params: {
   name: "d1_production_query", arguments: { sql: "SELECT * FROM sample WHERE id = ?", params: [7] }
