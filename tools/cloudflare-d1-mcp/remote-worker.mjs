@@ -104,10 +104,27 @@ async function runTool(name, args, env) {
     };
   }
   if (name === "d1_production_schema") {
-    const result = await env.DB.prepare(
-      "SELECT type, name, tbl_name, sql FROM sqlite_master WHERE type IN ('table','view') AND name NOT LIKE 'sqlite_%' ORDER BY type, name"
-    ).all();
-    return { target: "production", tables: result.results || [] };
+    // D1's supported schema introspection PRAGMAs avoid querying protected
+    // sqlite_master metadata through the Worker binding authorizer.
+    const result = await env.DB.prepare("PRAGMA table_list").all();
+    const objects = (result.results || []).filter(item =>
+      item.schema === "main" &&
+      ["table", "view"].includes(item.type) &&
+      !String(item.name).startsWith("sqlite_")
+    );
+    const tables = [];
+    for (const item of objects) {
+      const safeName = String(item.name).replace(/"/g, '""');
+      const columnsResult = item.type === "table"
+        ? await env.DB.prepare(`PRAGMA table_info("${safeName}")`).all()
+        : { results: [] };
+      tables.push({
+        name: item.name,
+        type: item.type,
+        columns: columnsResult.results || []
+      });
+    }
+    return { target: "production", tables };
   }
   if (name === "d1_production_query") {
     const sql = singleStatement(args?.sql);
