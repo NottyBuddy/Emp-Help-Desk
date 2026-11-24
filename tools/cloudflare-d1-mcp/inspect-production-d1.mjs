@@ -38,7 +38,7 @@ for (const item of schema.filter(x => x.type === "table")) {
     arguments: { sql: `SELECT COUNT(*) AS row_count FROM "${name}"`, params: [] }
   });
   const rows = countResult.result?.results || [];
-  const foreignKeys = [...(item.sql || "").matchAll(/REFERENCES\s+["\x60]?([A-Za-z0-9_]+)["\x60]?\s*\\(([^)]+)\\)/gi)]
+  const foreignKeys = [...(item.sql || "").matchAll(/REFERENCES\s+["\x60]?([A-Za-z0-9_]+)["\x60]?\s*\(([^)]+)\)/gi)]
     .map(match => ({ referencedTable: match[1], referencedColumns: match[2].split(",").map(value => value.trim().replace(/["\x60]/g, "")) }));
   tables.push({
     name,
