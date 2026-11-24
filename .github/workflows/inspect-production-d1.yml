@@ -35,11 +35,19 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
-      - name: Publish inspection report
+      - name: Record current production D1 recovery bookmark
+        run: npx --yes wrangler@4 d1 time-travel info indiframe-helpdesk-db --config wrangler.toml > production-d1-recovery.txt
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Publish inspection and recovery point
         uses: actions/upload-artifact@v4
         with:
           name: production-d1-inspection
-          path: production-d1-inspection.json
+          path: |
+            production-d1-inspection.json
+            production-d1-recovery.txt
           if-no-files-found: error
           retention-days: 7
 
