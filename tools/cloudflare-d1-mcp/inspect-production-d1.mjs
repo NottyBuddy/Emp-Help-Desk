@@ -44,24 +44,22 @@ if (identity.result?.uuid !== databaseId || identity.result?.name !== databaseNa
   throw new Error("Production D1 identity mismatch. Inspection aborted.");
 }
 
-const schema = await query(
-  "SELECT type, name, tbl_name, sql FROM sqlite_master WHERE type IN ('table','view') AND name NOT LIKE 'sqlite_%' ORDER BY type, name"
+const objects = await query("PRAGMA table_list");
+const schema = objects.filter(item =>
+  item.schema === "main" &&
+  ["table", "view"].includes(item.type) &&
+  !String(item.name).startsWith("sqlite_")
 );
 const tables = [];
 for (const item of schema.filter(x => x.type === "table")) {
   const name = String(item.name);
   if (!/^[A-Za-z0-9_]+$/.test(name)) throw new Error("Unexpected table identifier; aborting.");
+  const columns = await query(`PRAGMA table_info("${name}")`);
   const countRows = await query(`SELECT COUNT(*) AS row_count FROM "${name}"`);
-  const foreignKeys = [...(item.sql || "").matchAll(/REFERENCES\s+["\x60]?([A-Za-z0-9_]+)["\x60]?\s*\(([^)]+)\)/gi)]
-    .map(match => ({
-      referencedTable: match[1],
-      referencedColumns: match[2].split(",").map(value => value.trim().replace(/["\x60]/g, ""))
-    }));
   tables.push({
     name,
     rowCount: Number(countRows[0]?.row_count ?? 0),
-    createSql: item.sql,
-    foreignKeys
+    columns
   });
 }
 
@@ -71,7 +69,7 @@ const report = {
   databaseId,
   previewDatabaseIdTouched: false,
   generatedAt: new Date().toISOString(),
-  schemaObjects: schema.filter(x => x.type === "view"),
+  schemaObjects: schema.filter(x => x.type === "view").map(x => ({ name: x.name })),
   tables
 };
 process.stdout.write(JSON.stringify(report, null, 2) + "\n");
