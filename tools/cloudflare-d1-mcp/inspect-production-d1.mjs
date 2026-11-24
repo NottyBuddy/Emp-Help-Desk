@@ -38,13 +38,10 @@ for (const item of schema.filter(x => x.type === "table")) {
     arguments: { sql: `SELECT COUNT(*) AS row_count FROM "${name}"`, params: [] }
   });
   const rows = countResult.result?.results || [];
-  const foreignKeys = [...(item.sql || "").matchAll(/REFERENCES\s+["\x60]?([A-Za-z0-9_]+)["\x60]?\s*\(([^)]+)\)/gi)]
-    .map(match => ({ referencedTable: match[1], referencedColumns: match[2].split(",").map(value => value.trim().replace(/["\x60]/g, "")) }));
   tables.push({
     name,
     rowCount: Number(rows[0]?.row_count ?? 0),
-    createSql: item.sql,
-    foreignKeys
+    columns: item.columns || []
   });
 }
 const report = {
@@ -53,7 +50,7 @@ const report = {
   databaseId,
   previewDatabaseIdTouched: false,
   generatedAt: new Date().toISOString(),
-  schemaObjects: schema.filter(x => x.type === "view"),
+  schemaObjects: schema.filter(x => x.type === "view").map(x => ({ name: x.name })),
   tables
 };
 process.stdout.write(JSON.stringify(report, null, 2) + "\n");
