@@ -20,7 +20,7 @@ New content is saved only in the current browser using localStorage. The workspa
 
 This is a preview build, not a production multi-company SaaS yet. Data is local to the browser and is not shared between devices or team members. Authentication, multi-tenant database, permissions, audit history, backups, billing, and production deployment are intentionally not active in this preview.
 
-The previous Cloudflare D1 database has not yet been wiped. Before deleting production rows, inspect the live D1 schema and take a backup. The Cloudflare Worker is now in maintenance mode: only the root status and health-check endpoints respond; every legacy API route returns HTTP 410. The Worker no longer imports or calls the old employee, session, helpdesk, or weekly-data route handlers, so those routes cannot read or write the old D1 database.
+The production Cloudflare D1 database was cleaned on 2026-11-24. All 569 rows across 21 application tables were deleted and verified at zero; the schema was preserved. This included employee accounts and sessions, attendance, breaks, KPI/source imports, call-performance data, quiz data, audit history, project records and legacy settings. The Preview D1 database was not touched. A pre-cleanup Time Travel bookmark and row-count report were saved as the `production-d1-cleanup` GitHub Actions artifact. Cloudflare Time Travel retains recovery history automatically (7 days on Workers Free, 30 days on Workers Paid), so the active database is empty but the deleted data remains restorable during that retention window. The Cloudflare Worker remains in maintenance mode: only the root status and health-check endpoints respond; every legacy API route returns HTTP 410.
 
 ## Run locally
 
