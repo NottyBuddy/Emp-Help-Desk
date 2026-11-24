@@ -35,6 +35,13 @@ jobs:
       - name: Test remote MCP Worker
         run: node tools/cloudflare-d1-mcp/remote-worker.test.mjs
 
+      - name: Align MCP bearer secret with the read-only inspection workflow
+        run: printf '%s' "$MCP_BEARER_TOKEN" | npx --yes wrangler@4 secret put MCP_BEARER_TOKEN --config wrangler.mcp.toml
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          MCP_BEARER_TOKEN: ${{ secrets.MCP_BEARER_TOKEN }}
+
       - name: Deploy isolated production D1 MCP Worker
         run: npx --yes wrangler@4 deploy --config wrangler.mcp.toml
         env:
