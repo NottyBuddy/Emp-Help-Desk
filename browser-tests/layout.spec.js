@@ -55,7 +55,7 @@ test("create, update status, search and delete a help request", async ({ page })
   await page.getByLabel("Category").selectOption("IT support");
   await page.getByLabel("Describe the issue").fill("Cannot access the shared workspace.");
   await page.getByRole("button", { name: "Save", exact: true }).click();
-  await expect(page.getByText("Laptop access issue")).toBeVisible();
+  await expect(page.locator("#recentRequests")).toContainText("Laptop access issue");
   await expect(page.locator("#openCount")).toHaveText("1");
 
   await page.locator('.nav-item[data-view="requests"]').click();
@@ -70,6 +70,7 @@ test("create, update status, search and delete a help request", async ({ page })
 
 test("create and find a knowledge article", async ({ page }) => {
   await page.goto("/index.html");
+  await page.locator('.nav-item[data-view="knowledge"]').click();
   await page.locator("#addArticleBtn").click();
   await page.getByLabel("Article title").fill("Getting started");
   await page.getByLabel("Category").fill("Onboarding");
