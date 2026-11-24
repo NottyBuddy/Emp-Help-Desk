@@ -1,3 +1,4 @@
+// Read-only inspection only; no database mutations are issued by this script.
 const endpoint = "https://indiframe-production-d1-mcp.mukuls2302.workers.dev/mcp";
 const bearerToken = process.env.MCP_BEARER_TOKEN;
 const databaseId = "8854232a-6e8f-4fe9-849c-5b61dc229602";
