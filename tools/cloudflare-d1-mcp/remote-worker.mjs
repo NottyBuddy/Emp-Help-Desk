@@ -11,7 +11,7 @@ const TOOLS = [
   },
   {
     name: "d1_production_schema",
-    description: "List production D1 tables and views with their CREATE SQL. Read-only.",
+    description: "List production D1 tables, views and columns using read-only schema metadata.",
     inputSchema: { type: "object", properties: {}, additionalProperties: false }
   },
   {
