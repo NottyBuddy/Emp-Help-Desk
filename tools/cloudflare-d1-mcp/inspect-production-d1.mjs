@@ -1,57 +1,77 @@
-// Read-only inspection only; no database mutations are issued by this script. Backup comes before any cleanup.
-const endpoint = "https://indiframe-production-d1-mcp.mukuls2302.workers.dev/mcp";
-const bearerToken = process.env.MCP_BEARER_TOKEN;
 const databaseId = "8854232a-6e8f-4fe9-849c-5b61dc229602";
-if (!bearerToken || bearerToken.length < 32) {
-  throw new Error("Missing GitHub Actions secret MCP_BEARER_TOKEN (must match the production MCP Worker's bearer secret).");
+const databaseName = "indiframe-helpdesk-db";
+const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+const apiToken = process.env.CLOUDFLARE_API_TOKEN;
+
+if (!accountId || !/^[a-f0-9]{32}$/i.test(accountId)) {
+  throw new Error("Missing or invalid CLOUDFLARE_ACCOUNT_ID.");
+}
+if (!apiToken || apiToken.length < 20) {
+  throw new Error("Missing CLOUDFLARE_API_TOKEN.");
 }
 
-let requestId = 0;
-async function rpc(method, params = {}) {
-  const response = await fetch(endpoint, {
-    method: "POST",
+const base = `https://api.cloudflare.com/client/v4/accounts/${accountId}/d1/database/${databaseId}`;
+
+async function api(path, options = {}) {
+  const response = await fetch(base + path, {
+    ...options,
     headers: {
-      Authorization: `Bearer ${bearerToken}`,
+      Authorization: `Bearer ${apiToken}`,
       "Content-Type": "application/json",
-      Accept: "application/json"
-    },
-    body: JSON.stringify({ jsonrpc: "2.0", id: ++requestId, method, params })
+      ...(options.headers || {})
+    }
   });
   const payload = await response.json();
-  if (!response.ok) throw new Error(`Production D1 MCP request failed (${response.status}): ${JSON.stringify(payload)}`);
-  if (payload.error) throw new Error(`Production D1 MCP error: ${payload.error.message}`);
-  if (payload.result?.isError) {
-    throw new Error(payload.result.content?.map(item => item.text).join("\n") || "Production D1 MCP tool failed.");
+  if (!response.ok || payload.success !== true) {
+    throw new Error(`Cloudflare D1 API failed (${response.status}): ${JSON.stringify(payload.errors || payload)}`);
   }
-  const text = payload.result?.content?.find(item => item.type === "text")?.text;
-  return text ? JSON.parse(text) : payload.result;
+  return payload;
 }
 
-await rpc("initialize", { protocolVersion: "2025-03-26", capabilities: {}, clientInfo: { name: "production-d1-inspector", version: "1.0.0" } });
-const schemaResult = await rpc("tools/call", { name: "d1_production_schema", arguments: {} });
-const schema = schemaResult.tables || [];
+async function query(sql, params = []) {
+  const payload = await api("/query", {
+    method: "POST",
+    body: JSON.stringify({ sql, params })
+  });
+  const result = payload.result?.[0];
+  if (!result?.success) throw new Error(`D1 query failed: ${JSON.stringify(result?.meta || result)}`);
+  return result.results || [];
+}
+
+// Verify the fixed production database identity before reading any data.
+const identity = await api("");
+if (identity.result?.uuid !== databaseId || identity.result?.name !== databaseName) {
+  throw new Error("Production D1 identity mismatch. Inspection aborted.");
+}
+
+const schema = await query(
+  "SELECT type, name, tbl_name, sql FROM sqlite_master WHERE type IN ('table','view') AND name NOT LIKE 'sqlite_%' ORDER BY type, name"
+);
 const tables = [];
 for (const item of schema.filter(x => x.type === "table")) {
   const name = String(item.name);
   if (!/^[A-Za-z0-9_]+$/.test(name)) throw new Error("Unexpected table identifier; aborting.");
-  const countResult = await rpc("tools/call", {
-    name: "d1_production_query",
-    arguments: { sql: `SELECT COUNT(*) AS row_count FROM "${name}"`, params: [] }
-  });
-  const rows = countResult.result?.results || [];
+  const countRows = await query(`SELECT COUNT(*) AS row_count FROM "${name}"`);
+  const foreignKeys = [...(item.sql || "").matchAll(/REFERENCES\s+["\x60]?([A-Za-z0-9_]+)["\x60]?\s*\(([^)]+)\)/gi)]
+    .map(match => ({
+      referencedTable: match[1],
+      referencedColumns: match[2].split(",").map(value => value.trim().replace(/["\x60]/g, ""))
+    }));
   tables.push({
     name,
-    rowCount: Number(rows[0]?.row_count ?? 0),
-    columns: item.columns || []
+    rowCount: Number(countRows[0]?.row_count ?? 0),
+    createSql: item.sql,
+    foreignKeys
   });
 }
+
 const report = {
   target: "production",
-  databaseName: "indiframe-helpdesk-db",
+  databaseName,
   databaseId,
   previewDatabaseIdTouched: false,
   generatedAt: new Date().toISOString(),
-  schemaObjects: schema.filter(x => x.type === "view").map(x => ({ name: x.name })),
+  schemaObjects: schema.filter(x => x.type === "view"),
   tables
 };
 process.stdout.write(JSON.stringify(report, null, 2) + "\n");
