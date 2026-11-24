@@ -32,7 +32,8 @@ jobs:
       - name: Inspect production schema, row counts and foreign keys (read only)
         run: node tools/cloudflare-d1-mcp/inspect-production-d1.mjs > production-d1-inspection.json
         env:
-          MCP_BEARER_TOKEN: ${{ secrets.MCP_BEARER_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Publish inspection report
         uses: actions/upload-artifact@v4
