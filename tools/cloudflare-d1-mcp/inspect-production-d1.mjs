@@ -48,7 +48,8 @@ const objects = await query("PRAGMA table_list");
 const schema = objects.filter(item =>
   item.schema === "main" &&
   ["table", "view"].includes(item.type) &&
-  !String(item.name).startsWith("sqlite_")
+  !String(item.name).startsWith("sqlite_") &&
+  item.name !== "_cf_KV"
 );
 const tables = [];
 for (const item of schema.filter(x => x.type === "table")) {
