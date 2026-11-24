@@ -63,6 +63,10 @@ test("create, update status, search and delete a help request", async ({ page })
   await expect(page.locator("#requestList")).toContainText("Laptop access issue");
   await page.locator('#requestList [data-action="status"]').click();
   await expect(page.locator("#requestList")).toContainText("In progress");
+  await page.locator('#requestList [data-action="edit"]').click();
+  await page.getByLabel("Request title").fill("Laptop access issue - updated");
+  await page.getByRole("button", { name: "Save", exact: true }).click();
+  await expect(page.locator("#requestList")).toContainText("Laptop access issue - updated");
   page.once("dialog", dialog => dialog.accept());
   await page.locator('#requestList [data-action="delete"]').click();
   await expect(page.locator("#requestCount")).toHaveText("0");
