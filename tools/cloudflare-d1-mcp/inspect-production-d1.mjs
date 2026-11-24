@@ -54,12 +54,10 @@ const tables = [];
 for (const item of schema.filter(x => x.type === "table")) {
   const name = String(item.name);
   if (!/^[A-Za-z0-9_]+$/.test(name)) throw new Error("Unexpected table identifier; aborting.");
-  const columns = await query(`PRAGMA table_info("${name}")`);
   const countRows = await query(`SELECT COUNT(*) AS row_count FROM "${name}"`);
   tables.push({
     name,
-    rowCount: Number(countRows[0]?.row_count ?? 0),
-    columns
+    rowCount: Number(countRows[0]?.row_count ?? 0)
   });
 }
 
