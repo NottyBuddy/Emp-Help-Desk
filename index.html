@@ -24,6 +24,7 @@
         <button class="nav-item" data-view="faqs"><span>✳</span> FAQs</button>
         <button class="nav-item" data-view="sops"><span>▧</span> Guides &amp; SOPs</button>
         <button class="nav-item" data-view="team"><span>♧</span> Team directory</button>
+        <button class="nav-item" data-view="notifications"><span>♧</span> Notifications <i id="unreadCount">0</i></button>
       </nav>
       <div class="sidebar-bottom"><div class="local-status"><span></span><div><b>Workspace ready</b><small>Local preview mode</small></div></div><button class="reset-link" id="resetData">Clear workspace data</button></div>
     </aside>
@@ -53,6 +54,7 @@
       <section id="view-faqs" class="view"><div class="toolbar"><div><h2>Frequently asked questions</h2><p>Short answers to recurring questions.</p></div><button class="primary-btn" id="addFaqBtn">＋ Add FAQ</button></div><div id="faqList" class="stack-list"></div></section>
       <section id="view-sops" class="view"><div class="toolbar"><div><h2>Guides &amp; SOPs</h2><p>Step-by-step procedures and internal guides.</p></div><button class="primary-btn" id="addSopBtn">＋ Add guide</button></div><div id="sopList" class="article-grid"></div></section>
       <section id="view-team" class="view"><div class="toolbar"><div><h2>Team directory</h2><p>Optional contacts for your workspace.</p></div><button class="primary-btn" id="addPersonBtn">＋ Add person</button></div><div id="teamList" class="team-grid"></div></section>
+      <section id="view-notifications" class="view"><div class="toolbar"><div><h2>Notifications</h2><p>Updates generated in this browser workspace.</p></div><button class="secondary-btn" id="markAllRead">Mark all as read</button></div><div id="notificationList" class="stack-list"></div></section>
       <footer class="footer">EMPLOYEE HELP DESK <span>LOCAL PREVIEW · NO SIGN-IN REQUIRED</span></footer>
     </main>
   </div>
