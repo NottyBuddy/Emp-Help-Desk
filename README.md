@@ -4,11 +4,11 @@ Responsive Employee Help Desk preview with a shared Cloudflare D1 backend founda
 
 ## Current state
 - Static preview remains available at https://nottybuddy.github.io/Emp-Help-Desk/
-- Existing browser-local CRUD remains active until a workspace access key is configured.
+- The current static UI stores requests, articles, FAQs, guides, team contacts, and notifications in this browser's LocalStorage only. It does not sync between devices.
 - New additive D1 tables are defined in `helpdesk-schema.sql`; they do not drop or modify legacy tables.
 - Worker API routes support workspace-scoped requests, articles, FAQs, guides, team records, overview counts, and request notifications.
 - API routes fail closed unless both `HELP_DESK_ACCESS_KEY` and `WORKSPACE_ID` Worker secrets/vars are configured.
-- The browser UI does not expose private shared data yet. This is deliberate: no login screen was requested, and a public static page must not contain a private workspace credential.
+- A local notification centre now records request creation and status changes. Notifications are local to this browser, not delivered to other users.
 
 ## Required Cloudflare configuration before shared mode
 Set Worker secret `HELP_DESK_ACCESS_KEY` to a strong random value and Worker variable `WORKSPACE_ID` to a unique workspace identifier. Never commit either value or put it in frontend JavaScript. The current single-key gate is suitable only for one trusted workspace; separate companies require per-workspace membership/authentication before multi-company use.
@@ -24,8 +24,9 @@ The API uses the production D1 binding configured in `wrangler.toml`. The deploy
   - `GET /api/notifications`
 
 ## Current limitations
+- Login remains disabled as requested. No private multi-user data mode is enabled.
 - Login UI intentionally remains disabled.
-- The shared API is gated but the static UI is still localStorage-only until a private credential-delivery/access flow is approved and configured.
+- The shared API remains gated. The static UI is still LocalStorage-only; no private access credential is shipped to the browser.
 - Current shared API gate supports one workspace key. Multi-company membership, per-user roles, secure invite/onboarding, attachment storage, notification delivery channels, audit trail, and backups are not complete.
 - File attachments are not enabled because no private object-storage binding has been configured.
 - Do not put employee or confidential company information into the public preview.
