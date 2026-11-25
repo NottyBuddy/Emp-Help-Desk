@@ -22,8 +22,8 @@ jobs:
           node-version: 20
       - name: Install dependencies
         run: npm install
-      - name: Run syntax checks
-        run: node --check worker.js && node --check employee-helpdesk.js
+      - name: Run repository checks
+        run: npm run check && npm test
       - name: Apply additive Help Desk schema
         run: npx --yes wrangler@4 d1 execute indiframe-helpdesk-db --remote --file=helpdesk-schema.sql
         env:
